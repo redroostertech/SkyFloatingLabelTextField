@@ -30,7 +30,7 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
      A Boolean value that determines if the language displayed is LTR. 
      Default value set automatically from the application language settings.
      */
-    @objc open var isLTRLanguage: Bool = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
+    @objc open var isLTRLanguage: Bool = true {
         didSet {
            updateTextAligment()
         }
@@ -367,7 +367,20 @@ open class SkyFloatingLabelTextField: UITextField { // swiftlint:disable:this ty
         createErrorLabel()
         updateColors()
         addEditingChangedObserver()
+        determineTextAlignment()
         updateTextAligment()
+    }
+
+    fileprivate func determineTextAlignment() {
+        let sharedSelector = NSSelectorFromString("sharedApplication")
+        guard
+            UIApplication.responds(to: sharedSelector),
+            let shared = UIApplication.perform(sharedSelector)?.takeUnretainedValue() as? UIApplication
+        else {
+            self.isLTRLanguage = true
+            return
+        }
+        isLTRLanguage = shared.userInterfaceLayoutDirection == .leftToRight
     }
 
     fileprivate func addEditingChangedObserver() {

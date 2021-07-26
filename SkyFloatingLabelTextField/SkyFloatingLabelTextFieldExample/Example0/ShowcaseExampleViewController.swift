@@ -13,7 +13,7 @@
 
 import UIKit
 
-let isLTRLanguage = UIApplication.shared.userInterfaceLayoutDirection == .leftToRight
+let isLTRLanguage = true
 
 class ShowcaseExampleViewController: UIViewController, UITextFieldDelegate {
 
